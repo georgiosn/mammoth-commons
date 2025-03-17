@@ -17,6 +17,8 @@ kfp component build . --component-filepattern catalogue/dataset_loaders/images.p
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/dataset_loaders/uci_csv.py
 docker system prune -a --force --volumes
+kfp component build . --component-filepattern catalogue/dataset_loaders/data_researchers.py
+docker system prune -a --force --volumes
 
 kfp component build . --component-filepattern catalogue/model_loaders/compute_rankings.py
 docker system prune -a --force --volumes
@@ -31,6 +33,8 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/model_loaders/onnx.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/model_loaders/pytorch.py
+docker system prune -a --force --volumes
+kfp component build . --component-filepattern catalogue/model_loaders/compute_researcher_ranking.py
 docker system prune -a --force --volumes
 
 kfp component build . --component-filepattern catalogue/metrics/image_bias_analysis.py
@@ -50,6 +54,8 @@ docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/xai_analysis_embeddings.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/xai_analysis.py
+docker system prune -a --force --volumes
+kfp component build . --component-filepattern catalogue/metrics/ranking_fairness.py
 docker system prune -a --force --volumes
 
 mkdir yamls
