@@ -47,5 +47,62 @@ def image_bias_analysis(
         "face verification",
         "image classification",
     ], "The provided task should be either face verification or image classification"
-    md = analysis(dataset.path, task, dataset.target, sensitive)
-    return Markdown(md)
+    # md = analysis(dataset.path, task, dataset.target, sensitive)
+    # return Markdown(md)
+    json = analysis(dataset.path, task, dataset.target, sensitive, output="json")
+
+    # TODO: modify this function to apply the styles you want.
+    def json_to_str_recursively(data, indent=0):
+        """Converts a JSON object to a string iteratively and recursively."""
+        result_str = ""
+
+        if isinstance(data, list):
+            for item in data:
+                result_str += json_to_str_recursively(item, indent)
+        elif isinstance(data, dict):
+            if data.get("type") == "heading":
+                result_str += (
+                    " " * indent + f"{'#' * data['level']} {data['content']}\n"
+                )
+            elif data.get("type") == "paragraph":
+                content = data.get("content", [])
+                if isinstance(content, list):
+                    for item in content:
+                        if item.get("type") == "text":
+                            result_str += " " * indent + item.get("content", "")
+                        elif item.get("type") == "inline_code":
+                            result_str += f"`{item.get('content', '')}`"
+                        elif item.get("type") == "link":
+                            result_str += (
+                                f"[{item.get('content', '')}]({item.get('url', '')})"
+                            )
+                        elif item.get("type") == "code":
+                            result_str += (
+                                "\n"
+                                + " " * (indent + 4)
+                                + "```"
+                                + item.get("language", "")
+                                + "\n"
+                            )
+                            result_str += (
+                                " " * (indent + 4) + item.get("content", "") + "\n"
+                            )
+                            result_str += " " * (indent + 4) + "```"
+                else:
+                    result_str += " " * indent + str(content)
+                result_str += "\n"  # newline after paragraph
+            elif data.get("type") == "code":
+                result_str += " " * indent + "```" + data.get("language", "") + "\n"
+                result_str += " " * indent + data.get("content", "") + "\n"
+                result_str += " " * indent + "```\n"
+            elif data.get("type") == "list":
+                result_str += json_to_str_recursively(data.get("content", []), indent)
+            else:
+                result_str += " " * indent + str(data) + "\n"
+        else:
+            result_str += " " * indent + str(data) + "\n"
+
+        return result_str
+
+    output_str = json_to_str_recursively(json)
+    return output_str
