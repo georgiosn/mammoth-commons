@@ -4,7 +4,7 @@ from random import choices
 
 
 def normal_ranking(dataset, ranking_variable):
-     """
+    """
     Rank a dataset based on a specified variable in descending order.
 
     This function sorts the input dataset based on the values of the given ranking variable,
@@ -17,9 +17,10 @@ def normal_ranking(dataset, ranking_variable):
 
     Returns:
     pandas.DataFrame: A new DataFrame containing the original dataset sorted by ranking_variable
-                      in descending order, with an additional column 'Ranking_{ranking_variable}'
-                      that contains the corresponding rank for each entry.
+                  in descending order, with an additional column 'Ranking_{ranking_variable}'
+                  that contains the corresponding rank for each entry.
     """
+
     ranked_dataset = dataset.sort_values(ranking_variable, ascending=False)
     ranked_dataset[f"Ranking_{ranking_variable}"] = [
         i + 1 for i in range(ranked_dataset.shape[0])
@@ -41,17 +42,17 @@ def Compute_mitigation_strategy(
     -----------
     dataset : pd.DataFrame
         A pandas DataFrame containing the data to be ranked, including sensitive and protected attributes.
-    
+
     mitigation_method : str
         The method of mitigation to apply. Options include:
         - "Statistical_parity": Adjusts ranking to balance representation between protected and non-protected groups.
         - "Equal_parity": Assumes equal distribution for protected and non-protected groups.
         - "Updated_statistical_parity": Not yet implemented.
         - "Internal_group_fairness": Not yet implemented.
-    
+
     ranking_variable : str
         The name of the new ranking variable to be added to the dataset.
-    
+
     sensitive_attribute : str
         The name of the column in the dataset that contains sensitive attribute values.
 
@@ -68,7 +69,7 @@ def Compute_mitigation_strategy(
     NotImplementedError
         If "Updated_statistical_parity" or "Internal_group_fairness" is selected as the mitigation method.
     """
-    #Filter out rows with null values in the sensitive attribute
+    # Filter out rows with null values in the sensitive attribute
     Dataframe_ranking = dataset[~dataset[sensitive_attribute].isnull()]
 
     # Initialize dictionaries to store chosen groups and researchers
@@ -76,7 +77,7 @@ def Compute_mitigation_strategy(
 
     # Create a set of unique sensitive attribute values from the dataframe
     sensitive = set(Dataframe_ranking[sensitive_attribute])
-    
+
     # Create subsets of the data for each group based on the sensitive attribute
     Ranking_sets = {
         attribute: Dataframe_ranking[
@@ -172,9 +173,9 @@ def mitigation_ranking(
                                              as protected (e.g., "female" for Gender). Default is "female".
 
     Returns:
-        pd.DataFrame: A DataFrame containing the results of the mitigation strategy computation, 
+        pd.DataFrame: A DataFrame containing the results of the mitigation strategy computation,
                        including rankings based on the specified mitigation method.
-    
+
     Example:
         result_df = mitigation_ranking(my_dataset, 'income', 'Equalized_odds', 'Gender', 'male')
 
@@ -201,7 +202,7 @@ def model_normal_ranking() -> ResearcherRanking:
     an instance of the ResearcherRanking class containing the ranking data.
 
     Returns:
-        ResearcherRanking: An instance of the ResearcherRanking class 
+        ResearcherRanking: An instance of the ResearcherRanking class
         populated with normal ranking data.
     """
     # Call the ResearcherRanking constructor with 'normal_ranking' as an argument
@@ -210,16 +211,16 @@ def model_normal_ranking() -> ResearcherRanking:
 
 @loader(namespace="csh", version="v002", python="3.11")
 def model_mitigation_ranking() -> ResearcherRanking:
-    """ 
+    """
     Load the researcher ranking model incorporating a mitigation strategy.
 
-    This function implements a fair ranking mechanism utilizing a sampling technique. It applies a 
-    mitigation strategy based on Statistical Parity, which aims to ensure equitable treatment 
-    across different groups by mitigating bias in the ranking process. Additionally, it compares 
+    This function implements a fair ranking mechanism utilizing a sampling technique. It applies a
+    mitigation strategy based on Statistical Parity, which aims to ensure equitable treatment
+    across different groups by mitigating bias in the ranking process. Additionally, it compares
     the results of this fair ranking with a standard ranking derived from one of the numerical columns.
 
     Returns:
-        ResearcherRanking: An instance of ResearcherRanking that contains both the mitigation-based 
+        ResearcherRanking: An instance of ResearcherRanking that contains both the mitigation-based
         ranking and the standard ranking for comparison.
     """
     # Invoke the ResearcherRanking constructor with both mitigation and normal rankings.

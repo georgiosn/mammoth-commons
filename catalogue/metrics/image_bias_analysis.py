@@ -1,6 +1,6 @@
 from mammoth.datasets import Image
 from mammoth.models import EmptyModel
-from mammoth.exports import Markdown
+from mammoth.exports import HTML, Markdown
 from typing import List
 from mammoth.integration import metric, Options
 from cvbiasmitigation.suggest import analysis
@@ -47,23 +47,36 @@ def image_bias_analysis(
         "face verification",
         "image classification",
     ], "The provided task should be either face verification or image classification"
-    # md = analysis(dataset.path, task, dataset.target, sensitive)
-    # return Markdown(md)
     json = analysis(dataset.path, task, dataset.target, sensitive, output="json")
 
-    # TODO: modify this function to apply the styles you want.
-    def json_to_str_recursively(data, indent=0):
+    def json_to_str_recursively(data, indent=0, pending_close=[""]):
         """Converts a JSON object to a string iteratively and recursively."""
         result_str = ""
-
         if isinstance(data, list):
             for item in data:
                 result_str += json_to_str_recursively(item, indent)
+            if pending_close[0]:
+                result_str += pending_close[0]
+                pending_close[0] = ""
         elif isinstance(data, dict):
             if data.get("type") == "heading":
-                result_str += (
-                    " " * indent + f"{'#' * data['level']} {data['content']}\n"
-                )
+                level = data["level"]
+                if pending_close[0]:
+                    result_str += pending_close[0]
+                    pending_close[0] = ""
+                if level == 1:
+                    result_str += f"# {data['content']}\n"
+                elif level == 2:
+                    result_str += f"## {data['content'].capitalize()}\n"
+                elif level == 3:
+                    result_str += f"\n\n**{data['content'].capitalize()}**\n\n"
+                elif level == 4:
+                    result_str += f"\n\n*{data['content'].capitalize()}.* "
+                elif level == 5:
+                    result_str += f"\n\n<details> <summary>{data['content'].capitalize()}</summary>"
+                    pending_close[0] += "\n\n</details>\n\n"
+                else:
+                    result_str += f"\n\n*{data['content'].capitalize()}.* "
             elif data.get("type") == "paragraph":
                 content = data.get("content", [])
                 if isinstance(content, list):
@@ -71,7 +84,7 @@ def image_bias_analysis(
                         if item.get("type") == "text":
                             result_str += " " * indent + item.get("content", "")
                         elif item.get("type") == "inline_code":
-                            result_str += f"`{item.get('content', '')}`"
+                            result_str += f" <span style='font-size:small;'>{item.get('content', '')}</span> "
                         elif item.get("type") == "link":
                             result_str += (
                                 f"[{item.get('content', '')}]({item.get('url', '')})"
@@ -105,4 +118,4 @@ def image_bias_analysis(
         return result_str
 
     output_str = json_to_str_recursively(json)
-    return output_str
+    return Markdown(output_str)
