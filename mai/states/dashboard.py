@@ -29,8 +29,8 @@ class Dashboard(Styled):
         self.main_layout = QVBoxLayout()
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        self.label = QLabel("Fairness analysis", self)
-        self.label.setStyleSheet("font-size: 30px; font-weight: bold;")
+        self.label = QLabel("MAI-Bias", self)
+        self.label.setStyleSheet("font-size: 50px; font-weight: bold;")
         self.main_layout.addWidget(self.label)
 
         new_button = self.create_icon_button(

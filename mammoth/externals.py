@@ -28,4 +28,5 @@ def safeexec(code: str, out: str = "commons", whitelist: list[str] = None):
         ), f"Disallowed import detected: '{module_name}'. Only these are allowed: {','.join(whitelist)}"
     exec_context = locals().copy()
     exec(code, exec_context)
+    assert out in exec_context, f"The provided script or file did not contain an {out} variable"
     return exec_context[out]
