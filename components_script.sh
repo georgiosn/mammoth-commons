@@ -37,6 +37,8 @@ kfp component build . --component-filepattern catalogue/metrics/image_bias_analy
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/interactive_report.py
 docker system prune -a --force --volumes
+kfp component build . --component-filepattern catalogue/metrics/interactive_augmentation_report.py
+docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/interactive_sklearn_report.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/ma_graph_connection.py

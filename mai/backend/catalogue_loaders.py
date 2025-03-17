@@ -28,6 +28,7 @@ from catalogue.metrics.ranking_fairness import exposure_distance_comparison
 from catalogue.metrics.multi_objective_report import multi_objective_report
 from catalogue.metrics.optimal_transport import optimal_transport
 from catalogue.metrics.bias_scan import bias_scan
+from catalogue.metrics.interactive_augmentation_report import interactive_augmentation_report
 
 from mai.backend.registry import Registry
 
@@ -74,3 +75,5 @@ registry.analysis(
     exposure_distance_comparison,
     compatible=[model_mitigation_ranking],
 )
+
+registry.analysis(interactive_augmentation_report)
