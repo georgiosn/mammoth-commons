@@ -51,8 +51,6 @@ kfp component build . --component-filepattern catalogue/metrics/model_card.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/multi_objective_report.py
 docker system prune -a --force --volumes
-kfp component build . --component-filepattern catalogue/metrics/networks_layouts.py
-docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/optimal_transport.py
 docker system prune -a --force --volumes
 kfp component build . --component-filepattern catalogue/metrics/ranking_fairness.py
