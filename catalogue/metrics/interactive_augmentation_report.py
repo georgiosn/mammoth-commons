@@ -725,12 +725,8 @@ def interactive_augmentation_report(
             <em>r_aug</em> represents the percentage of synthetic samples in the final dataset, 
             providing insight into how much the dataset has been augmented.</p>
 
-            {''.join([f"""
-            <div class="plot-container">
-                <h3>Augmentation Strategies for sensitive attribute {sensitive[i]}</h3>
-                {plot_html}
-            </div>
-            """ for i, plot_html in enumerate(augmentation_html_plots)])}
+            {''.join([f"<div class=\"plot-container\"><h3>Augmentation Strategies for sensitive attribute {sensitive[i]}</h3>{plot_html}</div>" 
+                      for i, plot_html in enumerate(augmentation_html_plots)])}
             
             <div class="model-comparison">
                 <h2>Generative Models for Oversampling</h2>

@@ -102,8 +102,8 @@ sudo apt install libx11-xcb1 libxcb-xinerama0 libxcb-cursor0
 ``` 
 </details>
  
-## 🖥 [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
+## ☁️ [Deploy in a server](https://github.com/mammoth-eu/mammoth-toolkit-releases)
 
-## :clipboard: [Module catalogue](https://mammoth-eu.github.io/mammoth-commons/)
+## 🦣 [Module catalogue](https://mammoth-eu.github.io/mammoth-commons/)
 
-## :thumbsup: [Contribute](CONTRIBUTING.md)
+## 👍 [Contribute](CONTRIBUTING.md)
