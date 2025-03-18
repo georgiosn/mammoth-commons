@@ -5,7 +5,7 @@ from mammoth.externals import safeexec
 
 @loader(
     namespace="mammotheu",
-    version="v0036",
+    version="v0037",
     python="3.11",
     packages=("torch", "torchvision", "pandas"),
 )

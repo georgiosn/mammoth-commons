@@ -11,7 +11,7 @@ from aif360.sklearn.detectors import bias_scan as aif360bias_scan
 
 @metric(
     namespace="mammotheu",
-    version="v0036",
+    version="v0037",
     python="3.11",
     packages=(
         "aif360",

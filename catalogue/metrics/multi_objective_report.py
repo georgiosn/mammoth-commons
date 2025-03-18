@@ -63,7 +63,7 @@ def categories(iterable):
 
 @metric(
     namespace="mammotheu",
-    version="v0036",
+    version="v0037",
     python="3.11",
     packages=("fairbench", "plotly", "pandas", "onnxruntime", "ucimlrepo", "pygrank"),
 )

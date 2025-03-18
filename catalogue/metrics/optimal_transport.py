@@ -11,7 +11,7 @@ from aif360.sklearn.metrics import ot_distance
 
 @metric(
     namespace="mammotheu",
-    version="v001",
+    version="v0037",
     python="3.11",
     packages=(
         "aif360",
