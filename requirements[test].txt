@@ -27,3 +27,7 @@ PySide6
 aif360
 aif360[OptimalTransport]
 shap
+aif360[FACTS]
+aif360[AdversarialDebiasing]
+aif360[Reductions]
+aif360[inFairness]
