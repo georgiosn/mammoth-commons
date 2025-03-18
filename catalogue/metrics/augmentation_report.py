@@ -1,3 +1,5 @@
+from pandas.core.interchange.dataframe_protocol import DataFrame
+
 from mammoth.datasets import CSV
 from mammoth.models import EmptyModel
 from mammoth.exports import HTML
@@ -601,7 +603,7 @@ def apply_class_ratio_sampling(df, protected_attribute, target_column):
         "pygrank",
     ),
 )
-def interactive_augmentation_report(
+def augmentation_report(
     dataset: CSV,
     model: EmptyModel,
     sensitive: List[str],
@@ -634,16 +636,18 @@ def interactive_augmentation_report(
     """
 
     df = dataset.data
-
     non_categorical = [col for col in sensitive if col not in dataset.categorical]
     if non_categorical:
         raise ValueError(
-            f"Non-categorical sensitive attributes cannot be processed not allowed by interactive augmentation report: {non_categorical}. "
+            f"Non-categorical sensitive attributes cannot be processed not allowed by augmentation report: {non_categorical}. "
             f"Current categorical columns are: {dataset.categorical}"
         )
-
     target = dataset.labels.name if hasattr(dataset.labels, "name") else "target"
-    target_values_df = pd.concat(dataset.labels.values())
+    target_values_df = (
+        dataset.labels.idxmax(axis=1)
+        if isinstance(dataset.labels, pd.DataFrame)
+        else pd.concat(dataset.labels)
+    )
     df[target] = target_values_df.values
 
     fig = generate_nested_pie_chart(df, [target] + sensitive)
@@ -662,7 +666,7 @@ def interactive_augmentation_report(
     complete_html = f"""
     <html>
     <head>
-        <title>Interactive Augmentation Report</title>
+        <title>Augmentation Report</title>
         <style>
             body {{ font-family: Arial, sans-serif; margin: 20px; }}
             .container {{ max-width: 1200px; margin: 0 auto; }}
@@ -690,7 +694,7 @@ def interactive_augmentation_report(
     </head>
     <body>
         <div class="container">
-            <h1>Interactive Augmentation Report</h1>
+            <h1>Augmentation Report</h1>
             <div class="description">
                 <p>An interactive visualization first shows the distribution of data across sensitive attributes 
                 <i>{', '.join(sensitive)}</i> and the prediction target. Afterwards, several data augmentation
